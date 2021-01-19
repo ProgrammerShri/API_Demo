@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
+
 const App = () => {
-  let [data, setData] = useState(null);
+  let [data, setData] = useState([]);
   let [input, setInput] = useState("");
 
   const fetchURL = "https://jsonplaceholder.typicode.com";
@@ -9,16 +10,17 @@ const App = () => {
 
   useEffect(() => {
     getData().then((data) => setData(data));
-    return console.log(data);
   }, []);
+
+  const filteredPerson = data.filter((i) => {
+    return i.title.toLowerCase().includes(input.toLowerCase());
+  });
 
   const handleChange = (e) => {
     e.preventDefault();
     setInput(e.target.value);
   };
-
   
-    
 
   return (
     <div>
@@ -28,11 +30,9 @@ const App = () => {
         value={input}
         onChange={handleChange}
       />
-      {data?.map((item) => (
-        <ul>
-          <li>{item.title}</li>
-        </ul>
-      ))}
+      {filteredPerson.map((i) => (
+          <li key={i.title}>{i.title}</li>
+        ))}
     </div>
   );
 };
